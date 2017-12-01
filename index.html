@@ -4,34 +4,9 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width">
-  <script src="https://aframe.io/releases/0.3.0/aframe.min.js"></script>
-  <script src="https://sdk.altvr.com/libs/altspace.js/2.6.0/altspace.min.js"></script>
-  <script>
-    // n-skeleton-parent only works with root meshes at the moment. Since most model loaders use a root
-    // container object, we need to collapse the model so that n-skeleton-parent can access the mesh directly.
-    AFRAME.registerComponent('collapse-model', {
-        init: function () {
-            this.el.addEventListener('model-loaded', function () {
-                this.el.object3DMap.mesh.updateMatrixWorld();
-                var mesh;
-                this.el.object3DMap.mesh.traverse(function (obj) {
-                    if (!mesh && obj instanceof THREE.Mesh) {
-                        mesh = obj;
-                    }
-                }.bind(this))
-                if (mesh) {
-                    this.el.sceneEl.object3D.updateMatrixWorld(true);
-                    mesh.scale.copy(mesh.getWorldScale());
-                    this.el.setObject3D('mesh', mesh);
-                    // setObject3D emits this event in a-frame 0.4.0
-                    this.el.emit('object3dset', {
-                        type: 'mesh'
-                    });
-                }
-            }.bind(this));
-        }
-    });
-  </script>
+  <script src="https://aframe.io/releases/0.7.0/aframe.min.js"></script>
+  <script src="https://sdk.altvr.com/libs/altspace.js/2.7.1/altspace.min.js"></script>
+ 
   <script>
     altspace.getThreeJSTrackingSkeleton().then(function (skeleton) {
           window.head = skeleton.getJoint('Head');
@@ -78,7 +53,7 @@
  
         <a-mixin id="eye-mask" collada-model="#eye-mask-model" collapse-model></a-mixin>
         
-                <a-mixin id="parent-to-head" position="0 0.04 -0.09" scale="1.40 1.40 1.40" rotation="0 90 0" n-skeleton-parent="part:head;" sync sync-n-skeleton-parent></a-mixin>
+                <a-mixin id="parent-to-head" position="0 0.04 -0.09" scale="0.10 0.10 0.10" rotation="0 90 0" n-skeleton-parent="part:head;" sync sync-n-skeleton-parent></a-mixin>
         
  
  
@@ -187,7 +162,7 @@
 
  <!--eye-->
 
-  <a-entity position="-0.49 1.90 2.25" rotation="0 90 0" mixin="eye-mask" instantiator="on: click; group: mask; mixin: eye-mask parent-to-head"></a-entity>
+  <a-entity position="-0.49 1.90 2.25"scale="0.05 0.05 0.05" rotation="0 90 0" mixin="eye-mask" instantiator="on: click; group: mask; mixin: eye-mask parent-to-head"></a-entity>
     
 
  <!--poster-->
